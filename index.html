@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="fest_long_white.png" type="image/png" sizes="96x96">
+    <title>TECH TRIVIA</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/theme/material-darker.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <section>
+            <a  class="A" href="index.html"></a>
+           
+
+            <h1><i>TECH TRIVIA</i></h1>
+            <p>Your playground for coding challenges!</p></section></section>
+    </header>
+    <!-- Main Content Section -->
+    <main>
+        <div class="editor-container">
+            <!-- Language Selector -->
+            <select id="language">
+                <option value="javascript">JavaScript</option>
+                <option value="python">Python</option>
+                <option value="c">C</option>
+                <option value="cpp">C++</option>
+                <option value="java">Java</option>
+            </select>
+
+            <!-- Code Editor -->
+            <textarea id="code" placeholder="Write your code here..."></textarea>
+            <button onclick="runCode()" id="runButton">Run Code</button>
+            <div class="output" id="output"></div>
+        </div>
+    </main>
+    <div>
+
+
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p> 2025 TECH TRIVIA. </p>
+        <p>Powered by School of computer Application</p>
+        <p>Hosted by- OC Ankit verma</p>
+    </footer>
+
+    <!-- Scripts from CodeMirror -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/clike/clike.min.js"></script>
+    <script>
+        const editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            lineNumbers: true,
+            theme: 'material-darker',
+            mode: 'javascript',
+            readOnly: false,
+        });
+
+        // Language Selector
+        const languageSelector = document.getElementById('language');
+        languageSelector.addEventListener('change', () => {
+            const selectedLanguage = languageSelector.value;
+            let mode;
+            switch (selectedLanguage) {
+                case 'javascript':
+                    mode = 'javascript';
+                    break;
+                case 'python':
+                    mode = 'python';
+                    break;
+                case 'c':
+                case 'cpp':
+                case 'java':
+                    mode = 'text/x-csrc';
+                    break;
+                default:
+                    mode = 'javascript';
+            }
+            editor.setOption('mode', mode);
+        });
+
+        function runCode() {
+            const code = editor.getValue();
+            const outputDiv = document.getElementById('output');
+            const runButton = document.getElementById('runButton');
+            const selectedLanguage = languageSelector.value;
+
+            // Save timestamp
+            const timestamp = new Date().toLocaleString();
+
+            try {
+                if (selectedLanguage === 'javascript') {
+                    // Multi-line JavaScript execution
+                    const func = new Function(code);
+                    const result = func();
+
+                    // Display output and time
+                    outputDiv.innerHTML = `<strong>Output:</strong>\nresult will be declared soon...\n\n<strong>Ran at:</strong> ${timestamp}`;
+                } else {
+                    outputDiv.innerHTML = `<strong>Output:</strong>\nresult will be declared soon...\n\n<strong>Ran at:</strong> ${timestamp}`;
+                }
+            } catch (error) {
+                // Handle error and display output
+                outputDiv.innerHTML = `<strong>Error:</strong>\n${error.message}\n\n<strong>Ran at:</strong> ${timestamp}`;
+            }
+
+            // Disable the run button and code editor
+            editor.setOption('readOnly', true);
+            runButton.disabled = true;
+        }
+    </script>
+</body>
+</html>
